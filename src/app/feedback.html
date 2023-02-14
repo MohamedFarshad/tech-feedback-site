@@ -1,0 +1,110 @@
+<div class="feedback__master__wrapper d-flex align-items-center p-0 m-0 flex-wrap">
+<div class="feedback__left__panel col-12 col-md-6 px-4 py-5 px-lg-0 d-flex align-items-center justify-content-center">
+  <div class="title__image__wrapper col-12 col-lg-10 px-lg-5 mx-lg-4 px-lg-5 mx-lg-5">
+    <h2 class="banner__title mb-4 mb-lg-4 pe-lg-4 pe-lg-4">We would love to hear what you think.</h2>
+    <img class="w-100" src="../assets/images/banner-img.png">
+  </div>
+</div>
+<div class="feedback__right__panel col-12 col-md-6 d-flex align-items-center pt-4 pt-sm-5 pt-sm-0 justify-content-center">
+  <div class="px-0 mx-0 px-4 px-lg-5 mx-lg-5 col-12 col-lg-10">
+    <mat-stepper #stepper>
+      <!-- 1st step -->
+      <mat-step>
+        <p class="secondary__title text-center mb-4">Choose Department</p>
+        <form [formGroup]="firstFormGroup">
+          <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="d-grid"
+            >
+            <mat-radio-button class="custom__radio__button mb-3" *ngFor="let department of departments; let i=index;" [value]="department" [checked]="i === 0">
+             <img class="label__icon" src={{department.src}}>
+             <span class="label__text">{{department.name}}</span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </form> 
+      </mat-step>
+      <!-- 2nd step -->
+      <mat-step>
+        <p class="secondary__title text-center mb-4">How do you feel about using the UDC Courtroom?</p>
+        <form [formGroup]="secondFormGroup">
+          <section class="col-xl-8 col-xxl-7 mb-4 mx-auto justify-content-center">
+            <mat-button-toggle-group [(ngModel)]="rating" class="satisfaction__group">
+              <mat-button-toggle value="1">1</mat-button-toggle>
+              <mat-button-toggle value="2">2</mat-button-toggle>
+              <mat-button-toggle value="3">3</mat-button-toggle>
+              <mat-button-toggle value="4">4</mat-button-toggle>
+              <mat-button-toggle value="5" [checked]="true">5</mat-button-toggle>
+            </mat-button-toggle-group>
+            <p>Chosen value is {{rating}}</p>
+            <div class="satisfaction__text d-flex justify-content-between">
+              <p>Extremely disatisfied</p>
+              <p>Extremely satisfied</p>
+            </div>
+          </section>
+          <mat-form-field class="w-100 mt-3">
+            <mat-label>Why do you feel so?</mat-label>
+            <input
+              matInput
+              formControlName="secondCtrl"
+              required
+            />
+          </mat-form-field>  
+        </form>
+      </mat-step>
+      <!-- 3rd step -->
+      <mat-step>
+        <p class="secondary__title text-center mb-4">What feature/option could we add to make your experience better?</p>
+        <form [formGroup]="thirdFormGroup">
+          <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="d-grid"
+            >
+            <mat-radio-button class="custom__radio__button mb-3" *ngFor="let feature of features; let i=index;" [value]="feature" [checked]="i === features.length-1">
+             <img class="label__icon" src={{feature.src}}>
+             <span class="label__text">{{feature.name}}</span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </form> 
+      </mat-step>
+      <!-- 4th step -->
+      <mat-step>
+        <p class="secondary__title text-center mb-4">What according to you could be better about the audio quality?</p>
+        <form [formGroup]="fourthFormGroup">
+          <mat-form-field class="w-100 mt-3">
+            <mat-label>Mention your answer</mat-label>
+            <input
+              matInput
+              formControlName="fourthCtrl"
+              required
+            />
+          </mat-form-field>  
+        </form>
+      </mat-step>
+      <!-- Success page -->
+      <mat-step>
+        <div class="success__page text-center d-flex align-items-center justify-content-center">
+          <div>
+           <img src="../assets/images/cognitive-img.png" alt="cognitive image">
+           <h2 class="my-3">Thank you for your feedback!</h2>
+           <p>Have a great day!</p>
+          </div>
+        </div>
+       </mat-step>
+     
+    </mat-stepper>
+    <div class="footer__actions mb-5" *ngIf="stepper.selectedIndex + 1 !== stepper.steps.length">
+      <span class="steps">{{stepper.selectedIndex + 1}}/{{stepper.steps.length-1}}</span>
+      <!-- Progressbar -->
+      <mat-progress-bar class="feedback__progressbar" mode="determinate" value="{{((currentIndex/(stepper.steps.length-1))*100).toFixed(2)}}" class="w-100"></mat-progress-bar>
+      <div class="d-flex justify-content-between">
+        <button class="btn__previous mt-3" (click)="goBack(stepper)" *ngIf="stepper.selectedIndex !== 0">Previous</button>
+        
+        <button *ngIf="stepper.selectedIndex + 1 !== stepper.steps.length-1; else showSubmit" class="btn__next mt-3" (click)="goForward(stepper)">Next</button>
+        <ng-template #showSubmit>
+          <button class="btn btn__next mt-3" (click)="goForward(stepper)" [disabled]="!firstFormGroup.valid && !secondFormGroup.valid && !thirdFormGroup.valid">Submit</button>
+        </ng-template>
+      </div>
+    </div>
+</div>
+</div>
+</div>
